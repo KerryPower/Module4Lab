@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cards List</title>
+    <style>
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            background-color: #e3f2fd;
+        }
+
+        .card {
+            padding: 10px;
+            margin: 10px;
+            background-color: #ffffff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .card-title,
+        .artistName {
+            font-weight: 600;
+            font-size: 1.5em;
+            padding: 10px 0;
+        }
+
+        .card-text,
+        .artistPortfolio {
+            font-weight: 400;
+            font-size: 1em;
+            padding: 5px 0;
+        }
+
+        .imageTitle {
+            font-weight: 600;
+            font-size: 1em;
+            padding-top: 5px;
+        }
+
+        .image {
+            max-width: 200px;
+            height: auto;
+        }
+    </style>
+</head>
+
+<body>
+    <template id="card-template">
+        <div class="card">
+            <div class="card-body">
+                <div class="card-title"></div>
+                <div class="card-text"></div>
+            </div>
+        </div>
+    </template>
+    <template id="artist-template">
+        <div class="card">
+            <div class="card-body">
+                <div class="artistName"></div>
+                <div class="artistPortfolio"></div>
+                <div class="itemsDiv">
+                    <div class="itemsImg"></div>
+                </div>
+            </div>
+        </div>
+    </template>
+
+    <div id="card-list"></div>
+    <div id="artist-list"></div>
+
+    <script>
+        const data = [
+            { name: 'bob', age: 23 },
+            { name: 'alice', age: 39 }
+        ];
+        const artists = [
+            {
+                name: "Van Gogh",
+                portfolio: [
+                    { title: "portrait", url: "https://collectionapi.metmuseum.org/api/collection/v1/iiif/436532/1671316/main-image" },
+                    { title: "sky", url: "https://mymodernmet.com/wp/wp-content/uploads/2020/11/White-house-night-van-goh-worldwide-2.jpg" },
+                ]
+            },
+            {
+                name: "Van Gogh 2",
+                portfolio: [
+                    { title: "portrait", url: "https://collectionapi.metmuseum.org/api/collection/v1/iiif/436532/1671316/main-image" },
+                    { title: "sky", url: "https://mymodernmet.com/wp/wp-content/uploads/2020/11/White-house-night-van-goh-worldwide-2.jpg" },
+                ]
+            }
+        ];
+
+        function addCard(person) {
+            const template = document.getElementById("card-template").content.cloneNode(true);
+            template.querySelector('.card-title').innerText = person.name;
+            template.querySelector('.card-text').innerText = person.age;
+            document.querySelector('#card-list').appendChild(template);
+        }
+
+        function addArtist(artist) {
+            const template = document.getElementById("artist-template").content.cloneNode(true);
+            template.querySelector('.artistName').innerText = artist.name;
+            template.querySelector('.artistPortfolio').innerText = artist.name;
+            const portfolioDiv = template.querySelector('.artistPortfolio');
+
+            artist.portfolio.forEach(item => {
+                itemDiv.innerText = item.title;
+                portfolioDiv.appendChild(itemDiv);
+
+                const imageDiv = document.createElement('div');
+                const image = document.createElement('img');
+                image.src = item.url;
+                image.alt = item.title;
+                imageDiv.classList.add('image');
+                imageDiv.appendChild(image);
+                portfolioDiv.appendChild(imageDiv);
+            });
+
+            document.querySelector('#artist-list').appendChild(template);
+        }
+
+        data.forEach(person => addCard(person));
+        artists.forEach(artist => addArtist(artist));
+    </script>
+</body>
+
+</html>

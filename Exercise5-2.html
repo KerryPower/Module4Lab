@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+
+<body>
+    <div>
+        <h1>Latest News</h1>
+        <div id="News-Cards" class="row row-cols-sm-1 row-cols-md-2 row-cols-lg-4 g-4">
+        </div>
+    </div>
+    <div>
+        <h6>Add News Article</h6>
+        <div id="news-form">
+            <label for="title">Title:</label><br>
+            <input type="text" id="title" required><br>
+            <label for="content">Content:</label><br>
+            <input type="text" id="content" required>
+            <button type="button" id="submitNewsButton" onclick="updateArray()">Add News Item</button>
+        </div>
+    </div>
+    <template id="news-template">
+        <div class="card col-8" style="width: 18rem; margin:10px">
+            <div class="card-body">
+                <h5 class="card-title"></h5>
+                <p class="card-text"></p>
+            </div>
+        </div>
+    </template>
+
+    <script>
+        let news = [
+            {
+                id: 1,
+                title: 'Election Results',
+                content: "Newly elected minister..."
+            },
+            {
+                id: 2,
+                title: 'Sporting Success',
+                content: "World Cup winners..."
+            },
+            {
+                id: 3,
+                title: 'Tornado Warning',
+                content: "Residents should prepare..."
+            }
+        ];
+        function addCard(article) {
+            const template = document.getElementById("news-template").content.cloneNode(true);
+            template.querySelector('.card-title').innerText = article.title;
+            template.querySelector('.card-text').innerText = article.content;
+            return template;
+        }
+        function updateNews() {
+            const newsContainer = document.querySelector('#News-Cards');
+            newsContainer.innerHTML = '';
+            news.forEach(article => {
+                const card = addCard(article);
+                newsContainer.appendChild(card);
+            });
+        }
+        updateNews();    
+        function updateArray() {
+            const title = document.getElementById('title').value;
+            const content = document.getElementById('content').value;
+            const id = news.length + 1;
+            const newArticle = {
+                id: id,
+                title: title,
+                content: content
+            };
+            news.push(newArticle);
+            updateNews();
+            document.getElementById('title').value = ""
+            document.getElementById('content').value = ""
+        }
+        setInterval(updateNews, 5000);
+    </script>
+</body>
+
+</html>
