@@ -21,7 +21,7 @@
 
         function getGamesHtml(games) {
             let gamesHtml = [];
-            for(let game of games) {
+            for (let game of games) {
                 const gameHtml = populateGameTemplate(game);
                 gamesHtml.push(gameHtml);
             }
@@ -29,19 +29,48 @@
         }
 
         window.onload = function () {
-            const gamesHtml = getGamesHtml(gamesArray);
             const gamesContainer = document.querySelector("#games-container");
-            gamesHtml.forEach(gameHtml => {
+            const genreDropdown = document.getElementById("genre");
+            const uniqueGenres = [...new Set(gamesArray.map(game => game.genre))];
+            uniqueGenres.forEach(genre => {
+                const option = document.createElement("option");
+                option.textContent = genre;
+                option.value = genre;
+                genreDropdown.appendChild(option);
+            });
+            displayGames(gamesArray);
+        };
+
+        function displayGames(games) {
+            const gamesContainer = document.querySelector("#games-container");
+            gamesContainer.innerHTML = '';
+            games.forEach(game => {
+                const gameHtml = populateGameTemplate(game);
                 gamesContainer.appendChild(gameHtml);
             });
         }
 
+        const genreDropdown = document.getElementById("genre");
+        genreDropdown.addEventListener("change", function () {
+            const selectedGenre = this.value;
+            let filteredGames = [];
+            if (selectedGenre === "") {
+                filteredGames = gamesArray;
+            } else {
+                filteredGames = gamesArray.filter(game => game.genre === selectedGenre);
+            }
+            displayGames(filteredGames);
+        });
     </script>
 </head>
 
 <body>
     <header>
         <h1>Play Video Games</h1>
+        <label for="genre">Genre Filter</label>
+        <select name="genre" id="genre">
+            <option value="">All Genres</option>
+        </select>
     </header>
 
     <template id="card-template">
