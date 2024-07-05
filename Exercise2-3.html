@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Exercise 2.3</title>
+    <style>
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            background-color: #e3f2fd;
+        }
+
+        .card {
+            padding: 10px;
+            margin: 10px;
+            background-color: #ffffff;
+        }
+
+        .card-title,
+        .artist-name {
+            font-weight: 600;
+            font-size: 1.5em;
+            padding: 10px 0;
+        }
+
+        .card-text,
+        .artist-portfolio {
+            font-weight: 400;
+            font-size: 1em;
+            padding: 5px 0;
+        }
+
+        .image-title {
+            font-weight: 600;
+            font-size: 1em;
+            padding-top: 5px;
+        }
+
+        .image {
+            max-width: 200px;
+            height: auto;
+        }
+    
+    </style>
+
+</head>
+
+<body>
+
+    <template id="card-template">
+        <div class="card">
+            <div class="card-body">
+                <div class="card-title"></div>
+                <div class="card-text"></div>
+            </div>
+        </div>
+    </template>
+
+    <template id="artist-template">
+        <div class="card">
+            <div class="card-body">
+                <div class="artist-name"></div>
+                <div class="artist-portfolio"></div>
+            </div>
+        </div>
+    </template>
+
+    <div id="card-list"></div>
+    <div id="artist-list"></div>
+
+    <script>
+
+        const data = [
+            { name: 'bob', age: 23 },
+            { name: 'alice', age: 39 }
+        ];
+
+        const artists = [
+            {
+                name: "Van Gogh",
+                portfolio: [
+                    { title: "portrait", url: "https://collectionapi.metmuseum.org/api/collection/v1/iiif/436532/1671316/main-image" },
+                    { title: "sky", url: "https://mymodernmet.com/wp/wp-content/uploads/2020/11/White-house-night-van-goh-worldwide-2.jpg" },
+                ]
+            },
+            {
+                name: "Van Gogh 2",
+                portfolio: [
+                    { title: "portrait", url: "https://collectionapi.metmuseum.org/api/collection/v1/iiif/436532/1671316/main-image" },
+                    { title: "sky", url: "https://mymodernmet.com/wp/wp-content/uploads/2020/11/White-house-night-van-goh-worldwide-2.jpg" },
+                ]
+            }
+        ];
+
+        function addCard(person) {
+            const template = document.getElementById("card-template").content.cloneNode(true);
+            template.querySelector('.card-title').innerText = person.name;
+            template.querySelector('.card-text').innerText = `Age: ${person.age}`;
+            document.querySelector('#card-list').appendChild(template);
+        }
+
+        function addArtist(artist) {
+            const template = document.getElementById("artist-template").content.cloneNode(true);
+            template.querySelector('.artist-name').innerText = artist.name;
+            const portfolioDiv = template.querySelector('.artist-portfolio');
+            portfolioDiv.innerHTML = '';
+            artist.portfolio.forEach(item => {
+                const imgDiv = document.createElement('div');
+                const imageTitle = document.createElement('div');
+                imageTitle.classList.add('image-title');
+                imageTitle.innerText = item.title;
+                const image = document.createElement('img');
+                image.classList.add('image');
+                image.src = item.url;
+                imgDiv.appendChild(imageTitle);
+                imgDiv.appendChild(image);
+                portfolioDiv.appendChild(imgDiv);
+            });
+            document.querySelector('#artist-list').appendChild(template);
+        }
+
+        data.forEach(person => addCard(person));
+        artists.forEach(artist => addArtist(artist));
+
+    </script>
+</body>
+
+</html>
